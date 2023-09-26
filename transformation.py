@@ -1,18 +1,18 @@
 # Databricks notebook source
 spark.conf.set(
     f"fs.azure.account.key.fatimazahraestorage.dfs.core.windows.net", 
-    "OBiFlR0suyxbWsqntWUiwG4/nQn8x4UtkxB0q2K+KrkRYj21Kg0sxETMFgwAuktE3okiP1wZH/sL+ASt8uenEg=="
+    "sfzg4z+1EOSmh6JKWj2GEBMYN7D37oOytBVZQaNVRAnrDe5zn/tDGTpVRHeDRflOZCPds+vhzLVj+AStYBXUdA=="
 )
 
 
 # COMMAND ----------
 
-dbutils.fs.ls("abfss://publictransportdata@fatimazahraestorage.dfs.core.windows.net/raw/")
+dbutils.fs.ls("abfss://fatimazahraecontainer@fatimazahraestorage.dfs.core.windows.net/raw/")
 
 
 # COMMAND ----------
 
-file_location = "abfss://publictransportdata@fatimazahraestorage.dfs.core.windows.net/raw/"
+file_location = "abfss://fatimazahraecontainer@fatimazahraestorage.dfs.core.windows.net/raw/"
 
 
 # COMMAND ----------
@@ -147,24 +147,47 @@ result.show()
 
 # COMMAND ----------
 
+df.write \
+  .format('csv') \
+  .option('header', True) \
+  .mode('overwrite') \
+  .save("abfss://public-transport-data@fatimazahraestorage.dfs.core.windows.net/processed/df.csv")
+
+
+# COMMAND ----------
+
 from pyspark.sql import SparkSession
-from pyspark.conf import SparkConf
+from pyspark.sql.functions import *
 
-# Créez une session Spark
-spark = SparkSession.builder \
-    .appName("Data Transformation") \
-    .getOrCreate()
+# Initialiser SparkSession
+spark = SparkSession.builder.appName("DataTransformation").getOrCreate()
 
-# Configurez la clé d'accès Azure Blob Storage
-spark.conf.set(
-    "fs.azure.account.key.fatimazahraestorage.blob.core.windows.net",
-    "OBiFlR0suyxbWsqntWUiwG4/nQn8x4UtkxB0q2K+KrkRYj21Kg0sxETMFgwAuktE3okiP1wZH/sL+ASt8uenEg=="
-)
+# Répertoire source des fichiers CSV (raw)
+source_directory = "abfss://fatimazahraecontainer@fatimazahraestorage.dfs.core.windows.net/raw/"
 
-# Remplacez <storage_account_name> par le nom de votre compte de stockage
-# Remplacez YOUR_STORAGE_ACCOUNT_KEY par votre clé d'accès à votre compte de stockage
+# Répertoire de destination des fichiers CSV transformés (processed)
+destination_directory = "dabfss://fatimazahraecontainer@fatimazahraestorage.dfs.core.windows.net/raw//processed/"
 
-# Maintenant, vous pouvez lire/écrire à partir de votre compte de stockage Azure Blob
+# Liste des fichiers dans le répertoire source
+file_list = dbutils.fs.ls(source_directory)
+
+# Parcourir chaque fichier dans le répertoire source
+for file_info in file_list:
+    file_path = file_info.path
+    file_name = file_info.name
+
+    # Charger le fichier CSV
+    df = spark.read.csv(file_path, header=True, inferSchema=True)
+
+    # Appliquer les transformations nécessaires sur le DataFrame df
+    
+    # Par exemple, vous pouvez utiliser df.select(), df.filter(), etc.
+
+    # Sauvegarder le DataFrame transformé dans le répertoire de destination
+    df.write.mode("overwrite").csv(destination_directory + file_name)
+
+# Arrêter la session Spark
+spark.stop()
 
 
 # COMMAND ----------
