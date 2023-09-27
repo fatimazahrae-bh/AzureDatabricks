@@ -1,8 +1,8 @@
 # Databricks notebook source
 # Mounting data lake
 storageAccountName = "fatimazahraestorage"
-storageAccountAccessKey = "sfzg4z+1EOSmh6JKWj2GEBMYN7D37oOytBVZQaNVRAnrDe5zn/tDGTpVRHeDRflOZCPds+vhzLVj+AStYBXUdA=="
-sasToken = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-09-26T20:48:04Z&st=2023-09-26T12:48:04Z&spr=https&sig=W7azFHCbl8uBYoGq36B641RNpdeH1pztz5t2wzUdFK4%3D"
+storageAccountAccessKey = "hMInODuYZ2hQTHY6mDg5eBMxf9EUFLpWhXtwtHwq88f/te9CBRmr5eeNhyLad6JKmOPGFuv/RqrB+ASt2FlwpQ=="
+sasToken = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2023-09-27T16:11:55Z&st=2023-09-27T08:11:55Z&spr=https&sig=a91fRLUOzLoGICh3efWpTBf1XkbLkyOu%2FryHzGq9Q5s%3D"
 blobContainerName = "fatimazahraecontainer"
 mountPoint = "/mnt/fatimazahraecontainer/"
 if not any(mount.mountPoint == mountPoint for mount in dbutils.fs.mounts()):
@@ -18,7 +18,6 @@ if not any(mount.mountPoint == mountPoint for mount in dbutils.fs.mounts()):
 
 # COMMAND ----------
 
-# Databricks notebook source
 dbutils.library.restartPython()
 
 # COMMAND ----------
