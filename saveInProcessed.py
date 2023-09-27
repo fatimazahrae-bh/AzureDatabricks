@@ -1,4 +1,5 @@
 # Databricks notebook source
+#-----------------
 import pandas as pd
 from datetime import datetime
 from pyspark.sql.functions import col, udf
@@ -47,8 +48,6 @@ for i in range(raw_file_count):
         continue
     else:
         df = spark.read.format("csv").option("inferSchema", "True").option("header", "True").option("delimiter", ",").load(raw_csv_files[i])
-        # Vos opérations de transformation ici
-        # Puis sauvegardez le DataFrame dans le répertoire "processed"
         
 
 
@@ -115,7 +114,7 @@ for i in range(raw_file_count):
         
 # -------------------------
 
-        # leretard moyen par itinéraire
+        # le retard moyen par itinéraire
         retard_moyen = df.groupBy("Route").agg(avg("Delay").alias("RetardMoyen"))
 
         # le nombre moyen de passagers par itinéraire
@@ -141,3 +140,8 @@ for i in range(raw_file_count):
     processed_count += 1
 
 dbutils.fs.unmount("/mnt/fatimazahraecontainer/")
+#-----------------
+
+# COMMAND ----------
+
+

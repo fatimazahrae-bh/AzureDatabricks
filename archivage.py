@@ -1,5 +1,5 @@
 # Databricks notebook source
-# get the destinations of the directories in our container (Raw, Processed, Archived)
+ # get the destinations of the directories in our container (Raw, Processed, Archivage)
 def get_file_path(storage_account_name,storage_account_access_key,container_name):
 
     spark.conf.set(f"fs.azure.account.key.{storage_account_name}.dfs.core.windows.net",
@@ -17,8 +17,6 @@ def get_file_path(storage_account_name,storage_account_access_key,container_name
 
 # COMMAND ----------
 
-# Databricks notebook source
-# MAGIC %run "./script import csv"
 
 # COMMAND ----------
 
@@ -67,8 +65,8 @@ files_paths = get_file_path(storage_account_name,storage_account_access_key,cont
 
 archived_raw_files(files_paths[0])
 delete_archived_files(files_paths[2])
+#------------
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC # gggjjjjjj
+

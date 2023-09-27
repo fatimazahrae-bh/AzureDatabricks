@@ -98,6 +98,7 @@ for month in range(1, 6):
     df.to_csv(file_name, index=False)
 
     print(f"Generated data for month {month_i} and saved to {file_name}")
+   #----------------- 
 
 # COMMAND ----------
 
